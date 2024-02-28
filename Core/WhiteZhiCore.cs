@@ -37,6 +37,12 @@ namespace WhiteZhi
 
 
         #endregion
-
+#if UNITY_EDITOR
+        internal class EditorMenus
+        {
+            [UnityEditor.MenuItem("WhiteZhi/GitHub")]
+            public static void InstallPackageKit() => UnityEngine.Application.OpenURL("https://github.com/BaiZhi967");
+        }
+#endif
     }
 }

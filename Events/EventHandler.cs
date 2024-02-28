@@ -35,7 +35,10 @@ namespace WhiteZhi
         /// 添加事件
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public void AddEvent<T>() where T : IWZEvent, new() => mTypeEvents.Add(typeof(T), new T());
+        public bool AddEvent<T>() where T : IWZEvent, new()
+        {
+            return mTypeEvents.TryAdd(typeof(T), new T());
+        }
 
         /// <summary>
         /// 获取指定类型的事件实例
