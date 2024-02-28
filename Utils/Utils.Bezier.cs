@@ -8,7 +8,7 @@ namespace WhiteZhi
         /// <summary>
         /// 贝塞尔曲线相关
         /// </summary>
-        public static partial class Bezier
+        public static class Bezier
         {
             /// <summary>
             /// 根据T值，计算贝塞尔曲线上面相对应的点

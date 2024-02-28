@@ -30,7 +30,7 @@ namespace WhiteZhi
                             _instance = FindObjectOfType<T>(); //从场景中寻找一个T类型的组件
                             if (_instance == null)
                             {
-                                Debug.LogWarning($"Can not find {typeof(T)} in scene");
+                                Debug.LogWarning($"[场景内单例]当前场景中未找到 {typeof(T)} 正在尝试自动创建");
                                 var obj = new GameObject(typeof(T).ToString());
                                 _instance = obj.AddComponent<T>();
                                 return _instance;

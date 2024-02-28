@@ -9,7 +9,7 @@ namespace WhiteZhi
         /// <summary>
         /// 随机数相关函数
         /// </summary>
-        public static partial class Random
+        public static class Random
         {
             private static System.Random rd = new System.Random();
             

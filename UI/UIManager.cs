@@ -39,6 +39,7 @@ namespace WhiteZhi
         /// <summary>
         /// 获取指定的UI层级
         /// </summary>
+        
         public static RectTransform GetLayer(UIPanelLayer layer)
         {
             return layers[layer];
