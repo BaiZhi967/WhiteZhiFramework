@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace WhiteZhi
 {
@@ -7,6 +8,29 @@ namespace WhiteZhi
     /// </summary>
     public abstract class UIBasePanel : MonoBehaviour
     {
+        private bool _isVisible;
+        public bool Visible
+        {
+            get => _isVisible;
+            set
+            {
+                if (_isVisible == value)
+                {
+                    return;
+                }
+
+                _isVisible = value;
+                gameObject.SetActive(value);
+            }
+        }
+        public string Name
+        {
+            get => gameObject.name;
+            set => gameObject.name = value;
+        }
+        private CanvasGroup _canvasGroup;
+        public Transform cachedTransform;
+        
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -22,6 +46,13 @@ namespace WhiteZhi
             RectTransform rectTransform = GetComponent<RectTransform>();
             rectTransform.offsetMin = Vector2.zero;
             rectTransform.offsetMax = Vector2.zero;
+            if (cachedTransform == null)
+            {
+                cachedTransform = transform;
+            }
+            
+            _canvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
+            gameObject.GetOrAddComponent<GraphicRaycaster>();
         }
         
 
