@@ -1,6 +1,6 @@
 ﻿namespace WhiteZhi
 {
-    public interface ICommand : IBelongToArchitecture,ICanSetArchitecture
+    public interface ICommand : IBelongToArchitecture,ICanSetArchitecture,ICanGetModel,ICanGetSystem,ICanGetUtility
     {
         void Execute();
         

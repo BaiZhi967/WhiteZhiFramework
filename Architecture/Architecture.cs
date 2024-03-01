@@ -166,6 +166,15 @@ namespace WhiteZhi
                 mSystems.Add(system);
             }
         }
+        /// <summary>
+        /// 获取 System 的API
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T GetSystem<T>() where T : class, ISystem
+        {
+            return mContainer.Get<T>();
+        }
 
         /// <summary>
         /// 注册 Utility 的API

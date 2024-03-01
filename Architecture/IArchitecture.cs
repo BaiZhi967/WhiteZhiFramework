@@ -7,6 +7,10 @@
         ///注册System
         /// </summary>
         void RegisterSystem<T>(T instance) where T : ISystem;
+        /// <summary>
+        /// 获取System
+        /// </summary>
+        T GetSystem<T>() where T : class, ISystem;
         
         /// <summary>
         /// 注册 Model
