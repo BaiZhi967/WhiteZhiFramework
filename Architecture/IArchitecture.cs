@@ -1,4 +1,6 @@
-﻿namespace WhiteZhi
+﻿using System;
+
+namespace WhiteZhi
 {
     public interface IArchitecture
     {
@@ -37,5 +39,25 @@
         void SendCommand<T>() where T : ICommand, new();
         
         void SendCommand<T>(T command) where T : ICommand;
+        
+         
+        /// <summary>
+        /// 发送事件
+        /// </summary>
+        void SendEvent<T>() where T : new(); 
+
+        /// <summary>
+        /// 发送事件
+        /// </summary>
+        void SendEvent<T>(T e);
+        /// <summary>
+        /// 注册事件
+        /// </summary>
+        IUnRegister RegisterEvent<T>(Action<T> onEvent);
+
+        /// <summary>
+        /// 注销事件
+        /// </summary>
+        void UnRegisterEvent<T>(Action<T> onEvent);
     }
 }

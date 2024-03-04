@@ -1,6 +1,6 @@
 ﻿namespace WhiteZhi
 {
-    public interface ISystem : IBelongToArchitecture,ICanSetArchitecture,ICanGetModel,ICanGetUtility
+    public interface ISystem : IBelongToArchitecture,ICanSetArchitecture,ICanGetModel,ICanGetUtility,ICanRegisterEvent,ICanSendEvent
     {
         void Init();
     }

@@ -210,5 +210,27 @@ namespace WhiteZhi
             command.Execute();
             command.SetArchitecture(null);
         }
+        
+        private TypeEventSystem mTypeEventSystem = new TypeEventSystem();
+
+        public void SendEvent<T>() where T : new()
+        {
+            mTypeEventSystem.Send<T>();
+        }
+
+        public void SendEvent<T>(T e)
+        {
+            mTypeEventSystem.Send<T>(e);
+        }
+
+        public IUnRegister RegisterEvent<T>(Action<T> onEvent)
+        {
+            return mTypeEventSystem.Register<T>(onEvent);
+        }
+
+        public void UnRegisterEvent<T>(Action<T> onEvent)
+        {
+            mTypeEventSystem.UnRegister<T>(onEvent);
+        }
     }
 }

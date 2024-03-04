@@ -1,6 +1,6 @@
 ﻿namespace WhiteZhi
 {
-    public interface IController : IBelongToArchitecture,ICanSendCommand,ICanGetSystem,ICanGetModel
+    public interface IController : IBelongToArchitecture,ICanSendCommand,ICanGetSystem,ICanGetModel,ICanRegisterEvent
     {
         
     }
