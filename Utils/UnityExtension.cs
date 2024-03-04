@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace WhiteZhi
 {
@@ -30,31 +27,7 @@ namespace WhiteZhi
 
         
 
-        /// <summary>
-        /// 贝塞尔移动动画
-        /// </summary>
-        /// <param name="gameObject"></param>
-        /// <param name="start">开始位置</param>
-        /// <param name="mid">控制点位置</param>
-        /// <param name="end">目标位置</param>
-        /// <param name="time">动画时间</param>
-        /// <param name="cnt">动画间隔数</param>
-        /// <param name="callback">回调函数</param>
-        /// <returns></returns>
-        public static IEnumerator BezierAnimationCoroutine(this GameObject gameObject, Vector3 start, Vector3 mid, Vector3 end,
-            float time, int cnt = 10,UnityAction callback = null)
-        {
-            
-            Vector3[] vector3s = Utils.Bezier.GetBeizerList(start, mid, end, 10);
-            gameObject.transform.position = start;
-            foreach (var pos in vector3s)
-            {
-                gameObject.transform.DOMove(pos, time/cnt);
-                yield return new WaitForSeconds(time/cnt);
-            }
-            callback?.Invoke();
-            Canvas.ForceUpdateCanvases();
-        }
+       
 
         #region Transform 相关
 
