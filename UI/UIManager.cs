@@ -55,19 +55,23 @@ namespace WhiteZhi
 
             //加载UIRoot 
             //TODO:等待ResourcesManager 类后进行优化
-            GameObject obj = ResourcesManager.Instance.Load<GameObject>(WhiteZhiCore.UIManager_UIRoot_Path);
-            obj.transform.SetParent(gameObject.transform);
-
-            Canvas = obj.GetComponentInChildren<Canvas>();
-            EventSystem = obj.GetComponentInChildren<EventSystem>();
+            ResourcesManager.Instance.LoadAsync<GameObject>(WhiteZhiCore.UIManager_UIRoot_Path,
+                obj =>
+                {
+                    obj.transform.SetParent(gameObject.transform);
+                    Canvas = obj.GetComponentInChildren<Canvas>();
+                    EventSystem = obj.GetComponentInChildren<EventSystem>();
+                    layers = new Dictionary<UIPanelLayer, RectTransform>();
+                    foreach (UIPanelLayer layer in Enum.GetValues(typeof(UIPanelLayer)))
+                    {
+                        layers.Add(layer,Canvas.transform.Find(layer.ToString()) as RectTransform);
+                    }
+                }, ResourcesLoadMod.AssetBundleLoad);
+            
             //Camera = obj.GetComponentInChildren<Camera>();
             
             //初始化UIRoot层级
-            layers = new Dictionary<UIPanelLayer, RectTransform>();
-            foreach (UIPanelLayer layer in Enum.GetValues(typeof(UIPanelLayer)))
-            {
-                layers.Add(layer,Canvas.transform.Find(layer.ToString()) as RectTransform);
-            }
+            
         }
 
         /// <summary>
@@ -75,7 +79,7 @@ namespace WhiteZhi
         /// </summary>
         /// <param name="data">面板所需的数据</param>
         /// <typeparam name="T">面板</typeparam>
-        public static void Open<T>(object data = null) where T : UIBasePanel
+        public static void Open<T>(object data = null,Action<T> openCallback = null) where T : UIBasePanel
         {
             void OpenPanel(UIBasePanel panel)
             {
@@ -85,35 +89,38 @@ namespace WhiteZhi
                 panel.SetData(panel);
                 
                 panel.OnUIEnable();
+                
+                openCallback?.Invoke(panel as T);
             }
 
-            UIBasePanel ClonePanel()
+            void ClonePanel(Action<UIBasePanel> callback)
             {
                 //面板路径
                 string panelPath = $"{WhiteZhiCore.UIManager_Panel_Path}/{typeof(T).Name}/{typeof(T).Name}";
-
-                GameObject obj = ResourcesManager.Instance.Load<GameObject>(panelPath);
-                if (obj == null)
+                ResourcesManager.Instance.LoadAsync<GameObject>(panelPath, obj =>
                 {
-                    CommonUtils.EditorLogError($"在{panelPath}路径下未找到UI面板:{typeof(T).Name}");
-                }
-                
-                //查找面板所在层级
-                RectTransform layer = UIManager.GetLayer(UIPanelLayer.Normal); // 默认显示在Normal层
+                    if (obj == null)
+                    {
+                        CommonUtils.EditorLogError($"在{panelPath}路径下未找到UI面板:{typeof(T).Name}");
+                    }
+                    //查找面板所在层级
+                    RectTransform layer = UIManager.GetLayer(UIPanelLayer.Normal); // 默认显示在Normal层
 
-                var objects = typeof(T).GetCustomAttributes(typeof(UILayerAttribute),true);
-                if (objects.Length > 0)
-                {
-                    var layerAttr = objects[0] as UILayerAttribute;
-                    layer = UIManager.GetLayer(layerAttr.layer);
-                }
-                //克隆面板
-                obj.transform.SetParent(layer);
-                obj.name = typeof(T).Name;
+                    var objects = typeof(T).GetCustomAttributes(typeof(UILayerAttribute),true);
+                    if (objects.Length > 0)
+                    {
+                        var layerAttr = objects[0] as UILayerAttribute;
+                        layer = UIManager.GetLayer(layerAttr.layer);
+                    }
+                    //克隆面板
+                    obj.transform.SetParent(layer);
+                    obj.name = typeof(T).Name;
                 
-                var newPanel = obj.GetOrAddComponent<T>();
+                    var newPanel = obj.GetOrAddComponent<T>();
+                    callback?.Invoke(newPanel);
+
+                },ResourcesLoadMod.AssetBundleLoad);
                 
-                return newPanel;
             }
 
             if (PanelDic.TryGetValue(typeof(T),out UIBasePanel panel))
@@ -124,18 +131,22 @@ namespace WhiteZhi
             else
             {
                 //克隆面板
-                panel = ClonePanel();
-                //将面板添加到字典中
-                PanelDic.Add(typeof(T),panel);
-                
-                panel.OnUIAwake();
-                //延迟一帧去执行 Start
-                Instance.StartCoroutine(Invoke(() =>
+                ClonePanel(panel =>
                 {
-                    panel.OnUIStart();
-                }));
-                //打开面板
-                OpenPanel(panel);
+                    
+                    //将面板添加到字典中
+                    PanelDic.Add(typeof(T),panel);
+                
+                    panel.OnUIAwake();
+                    //延迟一帧去执行 Start
+                    Instance.StartCoroutine(Invoke(() =>
+                    {
+                        panel.OnUIStart();
+                    }));
+                    //打开面板
+                    OpenPanel(panel);
+                });
+                
             }
         }
 

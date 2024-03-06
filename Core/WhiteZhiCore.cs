@@ -28,7 +28,7 @@ namespace WhiteZhi
         /// <summary>
         /// UIRoot 路径
         /// </summary>
-        public static string UIManager_UIRoot_Path = "Prefabs/UIRoot/UIRoot";
+        public static string UIManager_UIRoot_Path = "Assets/WhiteZhi/Res/Prefabs/UIRoot/UIRoot.prefab";
 
         /// <summary>
         /// UI Panel 路径
@@ -37,6 +37,9 @@ namespace WhiteZhi
 
 
         #endregion
+
+
+
 #if UNITY_EDITOR
         internal class EditorMenus
         {
