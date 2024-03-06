@@ -2,6 +2,9 @@
 
 namespace WhiteZhi
 {
+    /// <summary>
+    /// 矩阵
+    /// </summary>
     public struct Rectangle : IEquatable<Rectangle>
     {
         public float CenterX { get; private set; }
