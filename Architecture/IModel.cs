@@ -1,28 +1,24 @@
 ﻿namespace WhiteZhi
 {
-    public interface IModel : IBelongToArchitecture,ICanSetArchitecture , ICanGetUtility,ICanSendEvent
+    public interface IModel : IBelongToArchitecture, ICanSetArchitecture, ICanGetModel, ICanGetUtility,
+        ICanRegisterEvent, ICanSendEvent, ICanGetSystem,ICanInit
     {
-        void Init();
     }
 
     public abstract class AbstractModel : IModel
     {
-        private IArchitecture mArchitecture = null;
-        IArchitecture IBelongToArchitecture.GetArchitecture()
-        {
-            return mArchitecture;
-        }
+        private IArchitecture mArchitecture;
 
-        void ICanSetArchitecture.SetArchitecture(IArchitecture architecture)
-        {
-            mArchitecture = architecture;
-        }
+        IArchitecture IBelongToArchitecture.GetArchitecture() => mArchitecture;
 
-        void IModel.Init()
-        {
-            OnInit();
-        }
+        void ICanSetArchitecture.SetArchitecture(IArchitecture architecture) => mArchitecture = architecture;
 
+        public bool Initialized { get; set; }
+        void ICanInit.Init() => OnInit();
+
+        public void Deinit() => OnDeinit();
+
+        protected virtual void OnDeinit(){}
         protected abstract void OnInit();
         
     }

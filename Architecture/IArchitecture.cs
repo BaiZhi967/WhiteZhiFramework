@@ -5,59 +5,30 @@ namespace WhiteZhi
     public interface IArchitecture
     {
         
-        ///<summary>
-        ///注册System
-        /// </summary>
-        void RegisterSystem<T>(T instance) where T : ISystem;
-        /// <summary>
-        /// 获取System
-        /// </summary>
+        void RegisterSystem<T>(T system) where T : ISystem;
+
+        void RegisterModel<T>(T model) where T : IModel;
+
+        void RegisterUtility<T>(T utility) where T : IUtility;
+
         T GetSystem<T>() where T : class, ISystem;
-        
-        /// <summary>
-        /// 注册 Model
-        /// </summary>
-        void RegisterModel<T>(T instance) where T : IModel;
-        
-        /// <summary>
-        /// 获取 Model
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        T GetModel<T>() where T : class,IModel;
-        
-        /// <summary>
-        /// 注册 Utility
-        /// </summary>
-        void RegisterUtility<T>(T instance) where T : IUtility;
-        
-        /// <summary>
-        /// 获取Utility
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
+
+        T GetModel<T>() where T : class, IModel;
+
         T GetUtility<T>() where T : class, IUtility;
 
-        void SendCommand<T>() where T : ICommand, new();
-        
         void SendCommand<T>(T command) where T : ICommand;
-        
-         
-        /// <summary>
-        /// 发送事件
-        /// </summary>
-        void SendEvent<T>() where T : new(); 
 
-        /// <summary>
-        /// 发送事件
-        /// </summary>
+        TResult SendCommand<TResult>(ICommand<TResult> command);
+
+        TResult SendQuery<TResult>(IQuery<TResult> query);
+
+        void SendEvent<T>() where T : new();
         void SendEvent<T>(T e);
-        /// <summary>
-        /// 注册事件
-        /// </summary>
-        IUnRegister RegisterEvent<T>(Action<T> onEvent);
 
-        /// <summary>
-        /// 注销事件
-        /// </summary>
+        IUnRegister RegisterEvent<T>(Action<T> onEvent);
         void UnRegisterEvent<T>(Action<T> onEvent);
+        
+        void Deinit();
     }
 }
