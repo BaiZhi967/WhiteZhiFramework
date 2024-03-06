@@ -4,14 +4,12 @@
         ICanSendEvent, ICanSendCommand, ICanSendQuery
     {
         void Execute();
-        
-
-        
     }
 
-    public interface ICommand<T> : IBelongToArchitecture, ICanSetArchitecture, ICanGetSystem, ICanGetModel, ICanGetUtility,
+    public interface ICommand<TResult> : IBelongToArchitecture, ICanSetArchitecture, ICanGetSystem, ICanGetModel,
+        ICanGetUtility,
         ICanSendEvent, ICanSendCommand, ICanSendQuery
     {
-        T Execute();
+        TResult Execute();
     }
 }
