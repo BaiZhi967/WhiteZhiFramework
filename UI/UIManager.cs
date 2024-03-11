@@ -79,14 +79,14 @@ namespace WhiteZhi
         /// </summary>
         /// <param name="data">面板所需的数据</param>
         /// <typeparam name="T">面板</typeparam>
-        public static void Open<T>(object data = null,Action<T> openCallback = null) where T : UIBasePanel
+        public static void Open<T>(IUIData data = null,Action<T> openCallback = null) where T : UIBasePanel
         {
             void OpenPanel(UIBasePanel panel)
             {
                 //将面板舍设置到最底层 即显示到屏幕最上层
                 panel.transform.SetAsLastSibling();
                 
-                panel.SetData(panel);
+                panel.SetData(data);
                 
                 panel.OnUIEnable();
                 

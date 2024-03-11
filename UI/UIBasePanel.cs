@@ -3,10 +3,20 @@ using UnityEngine.UI;
 
 namespace WhiteZhi
 {
+    
+    /// <summary>
+    /// 每个UI对应各种的Data
+    /// </summary>
+    public interface IUIData{}
+    
+    public class  UIPanelData : IUIData
+    {
+    }
+    
     /// <summary>
     /// UI面板基类
     /// </summary>
-    public abstract class UIBasePanel : MonoBehaviour
+    public abstract class UIBasePanel : MonoBehaviour , IPanel
     {
         private bool _isVisible;
         public bool Visible
@@ -29,7 +39,7 @@ namespace WhiteZhi
             set => gameObject.name = value;
         }
         private CanvasGroup _canvasGroup;
-        public Transform cachedTransform;
+        public Transform Transform => transform;
         
         /// <summary>
         /// 构造函数
@@ -46,11 +56,7 @@ namespace WhiteZhi
             RectTransform rectTransform = GetComponent<RectTransform>();
             rectTransform.offsetMin = Vector2.zero;
             rectTransform.offsetMax = Vector2.zero;
-            if (cachedTransform == null)
-            {
-                cachedTransform = transform;
-            }
-            
+
             _canvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
             gameObject.GetOrAddComponent<GraphicRaycaster>();
         }
@@ -64,7 +70,7 @@ namespace WhiteZhi
         /// 传入面板参数
         /// </summary>
         /// <param name="data">参数</param>
-        public virtual void SetData(object data)
+        public virtual void SetData(IUIData data)
         {
         }
 
@@ -72,6 +78,7 @@ namespace WhiteZhi
         {
             gameObject.SetActive(true);
         }
+        
 
         public virtual void OnUIDisable()
         {
@@ -82,5 +89,7 @@ namespace WhiteZhi
         {
             Destroy(gameObject);
         }
+
+        
     }
 }
